@@ -92,6 +92,21 @@ Fragile and semantically ambiguous. Use `\eqref{eq:energy}`. → `math.md`
 
 ---
 
+**`\autoref{}` when `cleveref` is loaded** [practice]
+```latex
+% Suboptimal — \autoref is hyperref's built-in cross-reference macro
+\autoref{eq:energy}   % "Equation 1" — inflexible, not customizable
+\autoref{fig:circuit}
+```
+`\autoref` (from `hyperref`) and `\cref` (from `cleveref`) produce similar
+output, but `\autoref` offers no customization, no multi-reference syntax
+(`\cref{eq:a,eq:b}` → "Equations 2 and 3"), and no sentence-case control
+(`\Cref{}` for sentence-initial use). When `cleveref` is loaded it supersedes
+`\autoref` entirely — use `\cref{}` and `\Cref{}` exclusively. Mixed use
+of both in a single document is a silent consistency failure. → `packages.md`, `math.md`
+
+---
+
 **`...` in math mode** [silent failure]
 ```latex
 % Wrong
@@ -416,3 +431,31 @@ F \quad = ma
 If spacing looks wrong, the environment or notation choice is likely wrong.
 Manual spacing commands (`\quad`, `\!`, `\ `) are appropriate only in
 documented, specific cases. → `math.md`
+
+---
+
+## Typography
+
+**Straight quotes or raw TeX backtick-apostrophe for quotation marks** [practice / silent failure]
+```latex
+% Wrong — straight quotes (paste from word processors; render as inch marks)
+"This is quoted text"
+
+% Wrong — TeX primitive style; hardcodes English typographic conventions and
+% is fragile under non-English babel/fontenc combinations
+``This is quoted text''
+```
+Use `\enquote{}` from `csquotes`:
+
+```latex
+\usepackage{csquotes}
+
+\enquote{This is quoted text}           % locale-aware, correct for document language
+\enquote{outer \enquote{inner} text}   % nested quotes handled automatically
+```
+
+`\enquote` integrates with `babel` and `polyglossia`, adapts automatically
+when the document language changes, and nests without manual escaping. The
+backtick-apostrophe form is technically functional in monolingual pdfLaTeX
+documents — but `\enquote` costs nothing and is always correct. → `packages.md`
+

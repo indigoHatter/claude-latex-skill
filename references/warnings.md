@@ -56,7 +56,7 @@ only with a documented rationale in the `KNOWN WARNINGS` block.
 |---------|----------|-------------------|
 | Undefined reference (`\ref`, `\cite`) | High | Always fix — compile twice if needed |
 | Overfull `\hbox` > 5pt | High | Fix — text is visibly outside margin |
-| Overfull `\hbox` 2–5pt | Medium | Fix if possible; document if accepted |
+| Overfull `\hbox` 2–5pt | Medium | Present PDF to user — visual impact is context-dependent; user decides |
 | Overfull `\hbox` ≤ 2pt | Low | Usually acceptable; document if kept |
 | Underfull `\hbox` / `\vbox` | Low–Medium | Investigate; often fixable with `\sloppy` or rewording |
 | Font substitution | Medium | Investigate; document if accepted |

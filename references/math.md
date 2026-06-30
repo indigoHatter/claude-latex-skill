@@ -361,3 +361,140 @@ documentation for the full module list. [P, R, C]
 **Either way:** these are domain-specific optional packages. Only load one if
 the project genuinely uses the notation they provide. Document the choice in
 `project_philosophy.md` and note the version constraint in `REQUIRES`. [M, P]
+
+---
+
+## Theorem Environments
+
+For documents presenting formal mathematical results — theorems, lemmas,
+propositions, definitions, proofs, remarks — `amsthm` is the standard
+package. Do not fake theorem environments with manual bold labels, `\medskip`,
+or ad-hoc spacing. `amsthm` provides correct vertical spacing, consistent
+numbering, `cleveref` integration, and the `proof` environment with automatic
+QED placement. [C, R, M]
+
+### Loading and Styles
+
+```latex
+\usepackage{amsthm}   % theorem environments; load after amsmath
+```
+
+`amsthm` provides three predefined styles that control the visual weight of
+label and body text:
+
+| Style | Label | Body | Use for |
+|-------|-------|------|---------|
+| `plain` | Bold upright | Italic | Theorems, lemmas, propositions, corollaries |
+| `definition` | Bold upright | Upright | Definitions, examples, exercises |
+| `remark` | Italic | Upright | Remarks, notes, observations |
+
+The italic body of `plain` style is not decoration — it is a visual signal
+that a formal claim follows. Use it only for environments that assert
+mathematical statements. Using `plain` style for definitions or examples
+misleads the reader. [C, R]
+
+### Declaring Environments
+
+Declare all theorem environments in the preamble (or `macros.tex` for
+modular projects), grouped by style and ordered logically:
+
+```latex
+% --- Theorem environments ---
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]       % numbered within section: Theorem 2.1
+\newtheorem{lemma}[theorem]{Lemma}           % shares counter with theorem
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition} % shares counter
+\newtheorem{example}{Example}[section]       % independent counter
+
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}   % unnumbered — * suppresses counter entirely
+\newtheorem*{note}{Note}
+```
+
+**Counter sharing.** Passing `[theorem]` as the second argument shares the
+`theorem` counter, producing interleaved numbering (Theorem 2.1, Definition
+2.2, Lemma 2.3). This keeps readers oriented in dense material. Independent
+counters (no `[theorem]`) produce separate sequences (Theorem 1, Definition 1,
+Lemma 2), which is appropriate when examples are numerous and would otherwise
+crowd the theorem count. Document the choice in `project_philosophy.md`. [R]
+
+**Numbering by section.** Passing `[section]` as the third argument resets the
+counter each section and prefixes it with the section number (Theorem 3.1).
+This is almost always the right choice for any document longer than a short
+handout. [R]
+
+### The `proof` Environment
+
+`amsthm` provides `\begin{proof}...\end{proof}` with an automatic QED symbol
+(■ by default, customizable via `\renewcommand{\qedsymbol}{}`):
+
+```latex
+\begin{proof}
+    By induction on $n$. The base case $n = 0$ is immediate.
+    For the inductive step, assume the result holds for $n - 1$. \ldots
+\end{proof}
+```
+
+When the proof ends with a displayed equation, the QED symbol migrates to its
+own line. Pin it to the equation with `\qedhere`:
+
+```latex
+\begin{proof}
+    Substituting \eqref{eq:definition} into the integral gives
+    \begin{equation*}
+        \int_0^1 f(x)\,\mathrm{d}x = 0. \qedhere
+    \end{equation*}
+\end{proof}
+```
+
+To label a proof for a specific result (e.g., for a deferred or out-of-order
+proof):
+
+```latex
+\begin{proof}[Proof of \cref{thm:main}]
+    \ldots
+\end{proof}
+```
+
+### Labeling and Cross-References with `cleveref`
+
+Use the `thm:` prefix for all theorem-family labels regardless of environment
+type. This is consistent with the `eq:`, `fig:`, `tab:`, `sec:` prefix
+convention and prevents collisions: [R, M]
+
+```latex
+\begin{theorem}
+    \label{thm:cauchy-schwarz}
+    For all vectors $\mathbf{u}, \mathbf{v} \in \mathbb{R}^n$, \ldots
+\end{theorem}
+```
+
+Register each environment with `cleveref` so that `\cref{thm:cauchy-schwarz}`
+produces "Theorem 3.1" rather than a bare number. Add after
+`\usepackage{cleveref}`:
+
+```latex
+\crefname{theorem}{Theorem}{Theorems}
+\crefname{lemma}{Lemma}{Lemmas}
+\crefname{proposition}{Proposition}{Propositions}
+\crefname{corollary}{Corollary}{Corollaries}
+\crefname{definition}{Definition}{Definitions}
+\crefname{example}{Example}{Examples}
+```
+
+With this setup: `\cref{thm:cauchy-schwarz}` → "Theorem 3.1";
+`\Cref{thm:cauchy-schwarz}` → "Theorem 3.1" (sentence-initial). Multi-reference
+syntax works automatically: `\cref{thm:a,lemma:b}` → "Theorem 3.1 and Lemma 3.4".
+[R, M]
+
+### When Not to Use `amsthm`
+
+`amsthm` environments carry semantic weight: the italic body of `plain` style
+signals a formal mathematical claim. In problem sets, worksheets, or other
+documents that want visually similar boxes for exercises or solutions without
+that semantic, consider a `tcolorbox`-based environment instead — it avoids
+misleading the reader about what constitutes a proved result. [R, C]

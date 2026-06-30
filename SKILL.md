@@ -145,6 +145,7 @@ Which reference files to read for common tasks:
 - *Defining or reviewing custom commands / macros* → `structure.md`
 - *Looking up a symbol or choosing between symbol variants* → `symbols.md`
 - *Setting up citations, a bibliography, or choosing between biblatex and bibtex* → `bibliography.md`
+- *Setting up theorem, proof, lemma, or definition environments* → `math.md`
 - *Physics notation packages (`physics`, `physics2`)* → `math.md`
 - *Before generating any LaTeX output* → scan `antipatterns.md` first
 - *Reviewing or auditing existing LaTeX* → `antipatterns.md`, `warnings.md`

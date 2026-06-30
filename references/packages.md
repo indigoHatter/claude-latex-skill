@@ -58,10 +58,18 @@ utilities → hyperlinks).
 
 % --- Typography ---
 \usepackage{microtype}          % Microtypographic improvements (protrusion, etc.)
+                                % Engine note: fully effective under pdfLaTeX only.
+                                % Under XeLaTeX: character expansion unsupported,
+                                % protrusion partial. Under LuaLaTeX: full support
+                                % via luaotfload. Document engine in REQUIRES if
+                                % microtype behaviour is load-bearing. [P, R]
 
 % --- Utilities ---
 \usepackage{xcolor}             % Color support
 \usepackage{enumitem}           % List customization
+\usepackage{csquotes}           % \enquote{} for locale-aware, nestable quotation marks;
+                                % integrates with babel/polyglossia. Required whenever
+                                % quoted text appears in the document. [R, C]
 
 % --- References & Links (load last) ---
 \usepackage{hyperref}           % PDF hyperlinks; almost always load last
@@ -143,6 +151,7 @@ them under any circumstances. [C]
 | `t1enc` | Old encoding command | `\usepackage[T1]{fontenc}` |
 | `pslatex` | Obsolete font selection | proper font packages |
 | `fixltx2e` | Fixes now in LaTeX kernel; causes errors | remove entirely |
+| `subfigure` | Deprecated; inconsistent spacing and float interaction | `subcaption` |
 
 The `eqnarray` environment (not a package) is also always wrong — see
 `math.md` for rationale and replacement. [C]

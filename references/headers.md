@@ -185,6 +185,7 @@ would always be unknown and nobody would read it.
 | Warning type | Disposition |
 |---|---|
 | Overfull `\hbox` ≤ 2pt | Usually acceptable; document if kept |
+| Overfull `\hbox` 2–5pt | Present PDF to user — visual impact is context-dependent; user decides whether to fix or accept |
 | Overfull `\hbox` > 5pt | Fix it — text is visibly outside the margin |
 | Undefined reference | Always fix before sharing |
 | Font substitution | Investigate; document if accepted |
